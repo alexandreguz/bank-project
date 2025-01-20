@@ -1,0 +1,33 @@
+<div class="container mx-auto p-8">
+    <div class="flex justify-center space-x-4 mb-8">
+      <button (click)="selectedOption = 'deposit'" 
+              class="px-8 py-6 text-xl font-semibold rounded-lg transition duration-300"
+              [class.bg-indigo-600]="selectedOption === 'deposit'"
+              [class.text-white]="selectedOption === 'deposit'"
+              [class.bg-gray-100]="selectedOption !== 'deposit'">
+        Deposit
+      </button>
+  
+      <button (click)="selectedOption = 'loan'" 
+              class="px-8 py-6 text-xl font-semibold rounded-lg transition duration-300"
+              [class.bg-indigo-600]="selectedOption === 'loan'"
+              [class.text-white]="selectedOption === 'loan'"
+              [class.bg-gray-100]="selectedOption !== 'loan'">
+        Loan
+      </button>
+  
+      <button (click)="selectedOption = 'withdrawal'" 
+              class="px-8 py-6 text-xl font-semibold rounded-lg transition duration-300"
+              [class.bg-indigo-600]="selectedOption === 'withdrawal'"
+              [class.text-white]="selectedOption === 'withdrawal'"
+              [class.bg-gray-100]="selectedOption !== 'withdrawal'">
+        Withdrawal
+      </button>
+    </div>
+  
+    <div class="mt-8">
+      @if (selectedOption) {
+        <app-transaction [type]="selectedOption" />
+      }
+    </div>
+  </div>

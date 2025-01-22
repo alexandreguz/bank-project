@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { TransactionComponent } from '../transaction/transaction.component';
 
 @Component({
@@ -6,8 +7,19 @@ import { TransactionComponent } from '../transaction/transaction.component';
   standalone: true,
   imports: [TransactionComponent],
   templateUrl: './options.component.html',
-  styleUrl: './options.component.css'
+   
 })
 export class OptionsComponent {
   selectedOption: 'deposit' | 'loan' | 'withdrawal' | '' = '';
+
+  constructor(private router: Router) {}
+
+  goBack() {
+    const params = new URLSearchParams(window.location.search);
+    const accountNumber = params.get('accountNumber');
+    
+    this.router.navigate(['/account'], { 
+      queryParams: { accountNumber }
+    });
+  }
 }

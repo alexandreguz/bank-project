@@ -1,1 +1,60 @@
-<app-account-card routerLink="/options"></app-account-card>
+ <div class="min-h-screen bg-gray-100 py-8 px-4">
+     <div class="max-w-4xl mx-auto">
+       <div class="bg-white rounded-lg shadow-lg p-6">
+         <h2 class="text-2xl font-bold text-gray-800 mb-6">Account Operations</h2>
+         
+         <div class="space-y-4">
+           <div *ngFor="let operation of sortedOperations" 
+                class="border-l-4"
+                [ngClass]="{
+                  'border-green-500': operation.type === 'deposit',
+                  'border-red-500': operation.type === 'withdrawal'
+                }">
+             <div class="bg-gray-50 p-4 rounded-r-lg hover:bg-gray-100 transition">
+               <div class="flex justify-between items-center">
+                 <div>
+                   <p class="text-sm text-gray-500">
+                     {{operation.date | date:'medium'}}
+                   </p>
+                   <p class="font-semibold" 
+                      [ngClass]="{
+                        'text-green-600': operation.type === 'deposit',
+                        'text-red-600': operation.type === 'withdrawal'
+                      }">
+                     {{operation.type | titlecase}}
+                   </p>
+                 </div>
+                 <p class="text-lg font-bold"
+                    [ngClass]="{
+                      'text-green-600': operation.type === 'deposit',
+                      'text-red-600': operation.type === 'withdrawal'
+                    }">
+                   {{operation.type === 'deposit' ? '+' : '-'}}
+                   ${{operation.amount}}
+                 </p>
+               </div>
+             </div>
+           </div>
+         </div>
+         
+         <div class="mt-6 pt-4 border-t">
+           <p class="text-gray-600">Total Balance: 
+             <span class="font-bold text-lg" 
+                   [ngClass]="{'text-green-600': balance >= 0, 'text-red-600': balance < 0}">
+               ${{balance}}
+             </span>
+           </p>
+         </div>
+
+         <div class="mt-8 text-center">
+            <button (click)="goToOptions()" 
+                    class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300">
+              Options
+            </button>
+        </div>
+
+
+       </div>
+     </div>
+   </div>
+ 

@@ -1,35 +1,46 @@
 import { Component, Input } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-transaction',
   standalone: true,
+  imports: [FormsModule],
   templateUrl: './transaction.component.html',
-  styleUrl: './transaction.component.css'
 })
 export class TransactionComponent {
-  @Input() type: 'deposit' | 'loan' | 'withdrawal' = 'deposit';
+  @Input() type: string = '';
+  amount: number = 0;
 
-  get title(): string {
-    switch(this.type) {
-      case 'deposit': return 'Deposit Money';
-      case 'loan': return 'Request Loan';
-      case 'withdrawal': return 'Withdraw Money';
-    }
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
+
+  onSubmit() {
+    const accountNumber = this.getAccountNumber();
+    const data = {
+      type: this.type,
+      amount: this.amount,
+      date: new Date(),
+      accountNumber
+    };
+
+    this.http.post('http://localhost:5000/api/operations', data)
+      .subscribe({
+        next: () => {
+          alert('Transaction successful!');
+          this.router.navigate(['/account'], { 
+            queryParams: { accountNumber }
+          });
+        },
+        error: () => alert('Transaction failed. Please try again.')
+      });
   }
 
-  get buttonText(): string {
-    switch(this.type) {
-      case 'deposit': return 'Deposit';
-      case 'loan': return 'Request Loan';
-      case 'withdrawal': return 'Withdraw';
-    }
-  }
-
-  get labelText(): string {
-    switch(this.type) {
-      case 'deposit': return 'Amount to deposit';
-      case 'loan': return 'Loan amount';
-      case 'withdrawal': return 'Amount to withdraw';
-    }
+  private getAccountNumber(): string {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('accountNumber') || '';
   }
 }
